@@ -20,7 +20,7 @@ def Collatz_conjecture(n): # Test number input
 
 while 1:
     print('------------------------------------------')
-    print('|     TerminalX2 : Collatz Simulation    |')
+    print('|     Xterminal1 : Collatz Simulation    |')
     print('------------------------------------------')
     print()
 
