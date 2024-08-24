@@ -1,59 +1,53 @@
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
 import numpy as np
 import time
 
-def Collatz_conjecture(n): # Test number input
-    i = 0 # Number of iterations
-    nums = [n]
-    while n != 1:
-        print(n, end=' ')
-        if n % 2 == 0:
-            n = n // 2
+def collatz(param):
+    global numbers
+    iterations, max_number, number = 0, 0, param
+    numbers = []
+    while number != 1: 
+        if number > max_number:
+            max_number = number
+        if number % 2 == 0:
+            number = number / 2
         else:
-            n = 3 * n + 1
-        i += 1
-        nums.append(n)
-    
-    print(n)
-    i += 1
-    return i, nums
+            number = 3 * number + 1
+        iterations += 1
+        numbers += [number]
+    return iterations, int(max_number)
 
 while 1:
-    print('------------------------------------------')
-    print('|     Xterminal1 : Collatz Simulation    |')
-    print('------------------------------------------')
+    print('----------------------------------------------------------')
+    print('|            Collatz Conjecture Simulation               |')
+    print('----------------------------------------------------------')
     print()
-
-    print('Input an integer to be tested:')
-
-    num = input('>>> ')
-
-    if num.lower() == 'exit':
+    
+    number = input('Input an integer to be tested: ')
+    if number.lower() == 'exit':
         break
 
     try:
-        num = int(num)
+        number = int(number)
         start_time = time.time()
-
-        iterations, nums = Collatz_conjecture(num)
-        max_num = max(nums)
+        iterations, max_number = collatz(number)
 
         print()
+        print(f'N: {number}')
         print(f'Iterations: {iterations}')
-        print(f'Highest number: {max_num}')
-        
-        # Matplotlib Graphing
-        if num > 10**54:
-            num = '{:e}'.format(num)
-        plt.title(f'Collatz Conjecture Simulation | n = {num}')
-        plt.xlabel(f'Iterations = {iterations}')
-        if max_num > 10**54:
-            max_num = '{:e}'.format(max_num)
-        plt.ylabel(f'Numbers | Highest Number = {max_num}')
-        ypoints = np.array(nums)
+        print(f'Highest N: {max_number}')
+
+        if number > 10**54:
+            number = '{:e}'.format(number)
+        plt.title(f'Collatz Conjecture Simulation | N: {number}')
+        plt.xlabel(f'Iterations ({iterations})')
+        if max_number > 10**54:
+            max_number = '{:e}'.format(max_number)
+        plt.ylabel(f'Numbers (Highest: {max_number})')
+        ypoints = np.array(numbers)
         plt.plot(ypoints, marker = '.')
         plt.show()
-
+        
         end_time = time.time()
         elapsed = end_time - start_time
         print(f'({elapsed:.8f} seconds)')
