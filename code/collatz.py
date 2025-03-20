@@ -1,42 +1,51 @@
 import time
+import sys
 
-def collatz(param):
-    global numbers
-    iterations, max_number, number = 0, 0, param
-    while number != 1: 
-        if number > max_number:
-            max_number = number
-        if number % 2 == 0:
-            number = number / 2
-        else:
-            number = 3 * number + 1
-        iterations += 1
-    return iterations, int(max_number)
+def collatz(n):
+    steps = 0
+    oddSteps = 0
+    evenSteps = 0
+    max = 0
+    while n != 1: 
+        if n > max: 
+            max = n
+        if n % 2 == 0: 
+            n //= 2
+            evenSteps += 1
+        else: 
+            n = n * 3 + 1
+            oddSteps += 1
+        steps += 1
+    return steps, evenSteps, oddSteps, max
 
-while 1:
-    print('----------------------------------------------------------')
-    print('|            Collatz Conjecture Simulation               |')
-    print('----------------------------------------------------------')
-    print()
-    
-    number = input('Input an integer to be tested: ')
-    if number.lower() == 'exit':
-        break
+sys.set_int_max_str_digits(1_000_000)
+n = int(input('n:              '))
+start = time.time()
 
-    try:
-        number = int(number)
-        start_time = time.time()
-        iterations, max_number = collatz(number)
+steps, evenSteps, oddSteps, max = collatz(n)
 
-        print()
-        print(f'N: {number}')
-        print(f'Iterations: {iterations}')
-        print(f'Highest N: {max_number}')
-        
-        end_time = time.time()
-        elapsed = end_time - start_time
-        print(f'({elapsed:.8f} seconds)')
-        print()
+print(f'({len(str(n))} digits)')
+print(f'steps:          {steps}')
+print(f'even steps:     {evenSteps}')
+print(f'odd steps:      {oddSteps}')
 
-    except ValueError:
-        print(f'Invalid input. Enter an integer.')
+if oddSteps == 0:
+    print(f'even-odd:       ~')
+else:
+    print(f'even-odd:       {evenSteps/oddSteps:.8f}')
+
+if evenSteps == 0:
+    print(f'odd-even:       ~')
+else:
+    print(f'odd-even:       {oddSteps/evenSteps:.8f}')
+
+print(f'peak:           {max} ({len(str(max))} digits)')
+
+if n == max:
+    print(f'n=peak:         TRUE')
+else:
+    print(f'n=peak:         FALSE')
+
+end = time.time()
+run_time = end - start
+print(f'time:           {run_time:.5f}s\n')
