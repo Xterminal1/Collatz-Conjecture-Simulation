@@ -5,16 +5,20 @@
 void collatz(unsigned long long n) {
     unsigned long long orig = n;
     
-    while (n > orig) {
+    // since the range from 1-limit is tested,
+    // once n goes below the input original number
+    // we can break the function and move on 
+    while (n > orig) { 
         if (n % 2 == 0)
-            n /= 2;
+            n /= 2; 
         else
-            n = 3 * n + 1;
+            n = (3 * n + 1) / 2; // optimized for odd numbers
     }
 }
 
 void calc(int low, int high) {
-    for (unsigned long long n = low; n <= high; n += 2) {
+    for (unsigned long long n = low; n <= high; n += 2) { // skipping even numbers because
+                                                          // they always lead to a number below the original
         collatz(n);
     }   
 }
@@ -28,7 +32,7 @@ int main() {
     auto start = std::chrono::high_resolution_clock::now();
 
     unsigned long long limit = 1'000'000'000;
-    unsigned long long r = limit / 10; // number of simulatenous threads that CPU can run
+    unsigned long long r = limit / 10; // CPU has 12 cores
 
     // for (unsigned long long n = 1; n <= limit; n += 2) {
     //     collatz(n);
